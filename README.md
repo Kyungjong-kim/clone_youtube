@@ -1,1 +1,5 @@
 # WeTUbe
+
+router
+controller
+template
