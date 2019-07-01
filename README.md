@@ -6,13 +6,10 @@ template
 
 ## Pages:
 
--[ ] Home \
--[ ] Join \
--[ ] Login \
+-[x] Home \
+-[x] Join \
+-[x] Login \
 -[x] Searching \
--[ ] UserDetail \
--[ ] EditProfile \
--[ ] ChangePassword \
--[ ] UploadVideo \
--[ ] VideoDetail \
--[ ] EditVideo
+-[x] UserDetail \
+-[x] EditProfile \
+-[x] ChangePassword \
