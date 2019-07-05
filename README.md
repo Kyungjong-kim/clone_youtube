@@ -13,3 +13,8 @@ template
 -[x] UserDetail \
 -[x] EditProfile \
 -[x] ChangePassword \
+
+## progress
+
+- 몽고DB 및 데이터 연동 성공. 쿼리문 작성 \
+- 스타일 및 프론트 단 작업 시작해야함.
