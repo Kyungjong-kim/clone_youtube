@@ -51,7 +51,6 @@ export const postUpload = async (req, res) => {
 export const videoDetail = async (req, res) => {
     const { params : {id}} = req;
     const video = await Video.findById(id);
-    console.log(video);
     try {     
         res.render("videoDetail", { pageTitle: video.title , video });
     } catch (error) {
@@ -62,7 +61,7 @@ export const videoDetail = async (req, res) => {
 export const editVideo = async (req, res) => {
     if (req.method === "GET") {
         const {
-            params: { id }
+            files: { id }
           } = req;
           try {
             const video = await Video.findById(id);
