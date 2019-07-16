@@ -30,7 +30,7 @@ const routes = {
     logout: LOGOUT,
     search: SEARCH,
     users: USERS,
-    userDetail: id => {
+    userDetail: (id) => {
         if (id) {
             return `/users/${id}`;
         } else {
