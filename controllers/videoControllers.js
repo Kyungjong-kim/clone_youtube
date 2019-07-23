@@ -1,6 +1,7 @@
 
 import routes from "../routes";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
     try {
@@ -52,7 +53,7 @@ export const postUpload = async (req, res) => {
 
 export const videoDetail = async (req, res) => {
     const { params : {id}} = req;
-    const video = await Video.findById(id).populate('creator');
+    const video = await Video.findById(id).populate('creator').populate('comments');
     try {     
         res.render("videoDetail", { pageTitle: video.title , video });
     } catch (error) {
@@ -107,3 +108,75 @@ export const deleteVideo = async (req, res) => {
     }
     res.redirect(routes.home);
 }
+
+//register video view
+
+export const postRegisterView = async(req,res) => {
+  const { 
+    params: {id}
+  }= req;
+  try {
+    const video = await Video.findById(id);
+    video.views += 1;
+    video.save();
+    res.status(200);
+  } catch (error) {
+    res.status(400);
+  } finally {    
+    res.end();
+  }
+}
+// Add Comment
+
+export const postAddComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { comment },
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    const newComment = await Comment.create({
+      text: comment,
+      creator: user.id
+    });
+    video.comments.push(newComment.id);
+    video.save();
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+//DELETE comment
+export const postRemoveComment = async (req, res) => {
+  const {
+    params: { id, commentId },
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id).populate("comments");
+    const comment = await Comment.findById(commentId );
+    console.log(comment, "*****", comment.creator, user.id);
+    if (String(comment.creator) !== user.id) {
+      throw "Comment can be deleted only writer!";
+      return;
+    }
+    await video.comments.pull(commentId);
+    video.save();
+    await Comment.findByIdAndDelete(commentId );
+    res.status(200);
+    res.send("done!");
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+    res.send(
+      JSON.stringify({
+        error
+      })
+    );
+  } finally {
+    res.end();
+  }
+};
